@@ -1,4 +1,4 @@
-console.log('Booting up welcomebot...')
+
 
 import bsky  from '@atproto/api';
 const { BskyAgent } = bsky;
@@ -9,12 +9,14 @@ import cron from 'node-cron';
 
 dotenv.config();
 
+console.log('Booting up BlueSky follow bot...')
+
 export const handler = async function (event, context) {
+    console.log("Initialized.")
     
     var now = new Date();
     
     cron.schedule('*/5 * * * *', async() => {
-        console.log("Initialized.")
         console.log('running a task every 5 minutes');
         // Log in to Bluesky
         const agent = new BskyAgent({
@@ -22,26 +24,34 @@ export const handler = async function (event, context) {
             persistSession: (evt, sess) => {
                 // store the session-data for reuse
                 // [how to do this??]
-                console.log('Persisting session data...')
-                const session_data = JSON.stringify(sess);
-                fs.writeFileSync('session.json', session_data);
+                // console.log('Persisting session data...')
+                // const session_data = JSON.stringify(sess);
+                // fs.writeFileSync('session.json', session_data);
             },
         });
-        if (fs.existsSync('session.json')) {
-            // load the session-data from a previous run
-            console.log('Loading session data...')
-            const session_data = fs.readFileSync('session.json');
-            const session = JSON.parse(session_data);
-            await agent.resumeSession(session)
-        } else {
-            // log in to Bluesky
-            console.log('Logging in...')
+        // if (fs.existsSync('session.json')) {
+        //     // load the session-data from a previous run
+        //     console.log('Loading session data...')
+        //     const session_data = fs.readFileSync('session.json');
+        //     const session = JSON.parse(session_data);
+        //     await agent.resumeSession(session)
+        // } else {
+        //     // log in to Bluesky
+        //     console.log('Logging in...')
 
-            await agent.login({
-                identifier: process.env.BSKY_USERNAME,
-                password: process.env.BSKY_PASSWORD,
-            });
-        }
+        //     await agent.login({
+        //         identifier: process.env.BSKY_USERNAME,
+        //         password: process.env.BSKY_PASSWORD,
+        //     });
+        // }
+
+         // log in to Bluesky
+        console.log('Logging in...')
+
+        await agent.login({
+            identifier: process.env.BSKY_USERNAME,
+            password: process.env.BSKY_PASSWORD,
+        });
 
         try{
             // Get a list of bsky actors
