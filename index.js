@@ -16,7 +16,7 @@ export const handler = async function () {
     
     var now = new Date();
     
-    setTimeoute( async() => {
+    setTimeout( async() => {
         console.log('running a task every 5 minutes');
         // Log in to Bluesky
         const agent = new BskyAgent({
@@ -79,7 +79,7 @@ export const handler = async function () {
         }
         console.log('Completed async responses. Goodbye.')
         // five minutes in milliseconds
-        
+
     }, 300000);
 }
 
