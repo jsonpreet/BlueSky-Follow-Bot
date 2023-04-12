@@ -1,2 +1,2 @@
-# Bluesky-Follow-Bot
+# BlueSky Follow Bot
  BlueSky Auto Follow Bot
