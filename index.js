@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv';
 import process from 'node:process';
 import fs from 'node:fs';
 import cron from 'node-cron';
+import * as readline from 'node:readline';
 
 dotenv.config();
 
@@ -17,6 +18,12 @@ export const handler = async function () {
     var now = new Date();
     
     async function init() {
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+            terminal: true
+        });
+
         console.log('running a task every 5 minutes');
         // Log in to Bluesky
         const agent = new BskyAgent({
@@ -46,12 +53,12 @@ export const handler = async function () {
         }
 
          // log in to Bluesky
-        console.log('Logging in...')
+        // console.log('Logging in...')
 
-        await agent.login({
-            identifier: process.env.BSKY_USERNAME,
-            password: process.env.BSKY_PASSWORD,
-        });
+        // await agent.login({
+        //     identifier: process.env.BSKY_USERNAME,
+        //     password: process.env.BSKY_PASSWORD,
+        // });
 
         try{
             // Get a list of bsky actors
@@ -59,16 +66,18 @@ export const handler = async function () {
             const actors = profiles.data.actors;
             console.log(`Found ${actors.length} profiles.`)
             let i = 0;
+            let j = 0;
 
             // Loop through the list of profiles
             for (const actor of actors) {
                 // Get the profile
                 const profile = await agent.getProfile({actor: actor.did})
 
-                if (profile.data.viewer.following == null) {await agent.follow(profile.data.did);
-                    console.log(`Followed ${profile.data.did} profile.`);
+                if (profile.data.viewer.following == null) {
+                    await agent.follow(profile.data.did);
                     // increment i by 1
                     i++;
+                    process.stdout.write(`Followed ${actors.length }/${i} profiles.\r`);
                     await sleep(2000);
                 }
             }
