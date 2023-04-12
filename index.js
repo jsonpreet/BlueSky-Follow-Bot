@@ -24,26 +24,26 @@ export const handler = async function () {
             persistSession: (evt, sess) => {
                 // store the session-data for reuse
                 // [how to do this??]
-                // console.log('Persisting session data...')
-                // const session_data = JSON.stringify(sess);
-                // fs.writeFileSync('session.json', session_data);
+                console.log('Persisting session data...')
+                const session_data = JSON.stringify(sess);
+                fs.writeFileSync('session.json', session_data);
             },
         });
-        // if (fs.existsSync('session.json')) {
-        //     // load the session-data from a previous run
-        //     console.log('Loading session data...')
-        //     const session_data = fs.readFileSync('session.json');
-        //     const session = JSON.parse(session_data);
-        //     await agent.resumeSession(session)
-        // } else {
-        //     // log in to Bluesky
-        //     console.log('Logging in...')
+        if (fs.existsSync('session.json')) {
+            // load the session-data from a previous run
+            console.log('Loading session data...')
+            const session_data = fs.readFileSync('session.json');
+            const session = JSON.parse(session_data);
+            await agent.resumeSession(session)
+        } else {
+            // log in to Bluesky
+            console.log('Logging in...')
 
-        //     await agent.login({
-        //         identifier: process.env.BSKY_USERNAME,
-        //         password: process.env.BSKY_PASSWORD,
-        //     });
-        // }
+            await agent.login({
+                identifier: process.env.BSKY_USERNAME,
+                password: process.env.BSKY_PASSWORD,
+            });
+        }
 
          // log in to Bluesky
         console.log('Logging in...')
@@ -55,12 +55,10 @@ export const handler = async function () {
 
         try{
             // Get a list of bsky actors
-            const profiles = await agent.app.bsky.actor.getSuggestions({ limit: 50 });
+            const profiles = await agent.app.bsky.actor.getSuggestions({ limit: 100 });
             const actors = profiles.data.actors;
             console.log(`Found ${actors.length} profiles.`)
             let i = 0;
-
-            // 1,00,000 milliseconds = 1 minute
 
             // Loop through the list of profiles
             for (const actor of actors) {
@@ -74,7 +72,7 @@ export const handler = async function () {
                     await sleep(2000);
                 }
             }
-            //fs.writeFileSync('data/' + now.getFullYear() + "-"+ now.getMonth() + "-" + now.getDate() + '___' + i + '.txt', `Total Followed ${i}`);
+            fs.writeFileSync('data/' + now.getFullYear() + "-"+ now.getMonth() + "-" + now.getDate() + '___' + i + '.txt', `Total Followed ${i}`);
             console.log(`Total Followed ${i} profiles.`)
         } catch (e) {
             console.log(e)
@@ -82,16 +80,15 @@ export const handler = async function () {
         console.log('Completed async responses. Goodbye.')
     }
 
-    const job = cron.schedule('* * * * *', () => {
+    cron.schedule('*/5 * * * *', () => {
         init();
     });
-    job.start();
 }
 
 const sleep = async (milliseconds) => {
     await new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
-export default handler
+//export default handler
 
-//handler()
+handler()
