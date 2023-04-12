@@ -11,7 +11,7 @@ dotenv.config();
 
 console.log('Booting up BlueSky follow bot...')
 
-export const handler = async function (event, context) {
+export const handler = async function () {
     console.log("Initialized.")
     
     var now = new Date();
