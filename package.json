@@ -14,9 +14,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon --watch 'src/**/*.js' --exec src/index.js"
+    "watch": "nodemon --watch '*.js' --exec index.js"
   },
   "engines": {
     "node": "18"
