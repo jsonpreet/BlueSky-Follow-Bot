@@ -9,7 +9,7 @@
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7"
   },
-  "name": "welcomebot",
+  "name": "followbot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
