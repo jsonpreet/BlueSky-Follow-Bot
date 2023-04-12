@@ -74,7 +74,7 @@ export const handler = async function () {
                     await sleep(2000);
                 }
             }
-            fs.writeFileSync('data/' + now.getFullYear() + "-"+ now.getMonth() + "-" + now.getDate() + '___' + i + '.txt', `Total Followed ${i}`);
+            //fs.writeFileSync('data/' + now.getFullYear() + "-"+ now.getMonth() + "-" + now.getDate() + '___' + i + '.txt', `Total Followed ${i}`);
             console.log(`Total Followed ${i} profiles.`)
         } catch (e) {
             console.log(e)
