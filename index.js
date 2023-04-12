@@ -55,10 +55,12 @@ export const handler = async function () {
 
         try{
             // Get a list of bsky actors
-            const profiles = await agent.app.bsky.actor.getSuggestions({ limit: 100 });
+            const profiles = await agent.app.bsky.actor.getSuggestions({ limit: 50 });
             const actors = profiles.data.actors;
             console.log(`Found ${actors.length} profiles.`)
             let i = 0;
+
+            // 1,00,000 milliseconds = 1 minute
 
             // Loop through the list of profiles
             for (const actor of actors) {
@@ -80,7 +82,7 @@ export const handler = async function () {
         console.log('Completed async responses. Goodbye.')
     }
 
-    const job = cron.schedule('*/5 * * * *', () => {
+    const job = cron.schedule('* * * * *', () => {
         init();
     });
     job.start();
