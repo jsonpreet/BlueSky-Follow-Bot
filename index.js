@@ -80,9 +80,10 @@ export const handler = async function () {
         console.log('Completed async responses. Goodbye.')
     }
 
-    cron.schedule('*/5 * * * *', () => {
+    const job = cron.schedule('*/5 * * * *', () => {
         init();
-    })
+    });
+    job.start();
 }
 
 const sleep = async (milliseconds) => {
