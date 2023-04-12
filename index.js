@@ -16,7 +16,7 @@ export const handler = async function () {
     
     var now = new Date();
     
-    cron.schedule('*/5 * * * *', async() => {
+    async function init() {
         console.log('running a task every 5 minutes');
         // Log in to Bluesky
         const agent = new BskyAgent({
@@ -78,7 +78,11 @@ export const handler = async function () {
             console.log(e)
         }
         console.log('Completed async responses. Goodbye.')
-    });
+    }
+
+    cron.schedule('*/5 * * * *', () => {
+        init();
+    })
 }
 
 const sleep = async (milliseconds) => {
