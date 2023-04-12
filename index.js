@@ -13,7 +13,7 @@ export const handler = async function (event, context) {
     
     var now = new Date();
     
-    cron.schedule('*/5 * * * *', async() => {
+    // cron.schedule('*/5 * * * *', async() => {
         console.log("Initialized.")
         console.log('running a task every 5 minutes');
         // Log in to Bluesky
@@ -68,7 +68,7 @@ export const handler = async function (event, context) {
             console.log(e)
         }
         console.log('Completed async responses. Goodbye.')
-    });
+    // });
 }
 
 const sleep = async (milliseconds) => {
